@@ -1,0 +1,60 @@
+<project name="openresty-test" default="run" basedir=".">
+	<description>
+        run openresty-test
+    </description>
+	<!-- set global properties for this build -->
+	<property name="openresty-home" location="D:\software\openresty\openresty-1.13.6.2-win64"/>
+	<property name="conf" location="${basedir}/conf"/>
+	<property name="src" location="${basedir}/src"/>
+	<property name="target-conf" location="${openresty-home}/routing/conf"/>
+	<property name="target-src" location="${openresty-home}/routing/lua"/>
+
+	<echo>######开发版本的ant配置#####</echo>
+
+	<target name="shutdown" depends="">
+		<echo>关闭正在运行的Nginx进程</echo>
+		<exec dir="${openresty-home}" executable="${openresty-home}/nginx.exe">
+			<arg line="-s stop"/>
+		</exec>
+		<exec dir="${openresty-home}" executable="taskkill">
+		     <arg line="-f -im nginx.exe"/>
+		</exec>
+	</target>
+
+	<target name="clean" depends="shutdown">
+		<echo>清理openresty目录 ${dist}下的conf,logs,janus,januslib</echo>
+		<delete dir="${target-conf}"/>
+		<delete dir="${target-src}"/>
+		<delete>
+			<fileset dir="${openresty-home}/logs" includes="*.log">
+			</fileset>
+		</delete>
+	</target>
+
+	<target name="init" depends="shutdown">
+		<echo>创建安装目录</echo>
+		<mkdir dir="${target-conf}"/>
+		<mkdir dir="${target-src}"/>
+	</target>
+
+	<target name="dist" depends="init" description="generate the distribution" >
+		<echo>复制安装文件</echo>
+		<copy todir="${target-conf}">
+			<fileset dir="${conf}">
+			</fileset>
+		</copy>
+		<copy todir="${target-src}">
+			<fileset dir="${src}">
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="run" depends="shutdown,dist">
+		<echo>启动Nginx成功...</echo>
+		<echo>${openresty-home}/nginx.exe -c ${openresty-home}/conf/routing/nginx.conf</echo>
+		<exec dir="${openresty-home}" executable="${openresty-home}/nginx.exe">
+			<arg line="-c ${openresty-home}/routing/conf/nginx.conf"/>
+		</exec>
+	</target>
+
+</project>

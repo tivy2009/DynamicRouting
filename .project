@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>openresty-test</name>
+	<name>DynamicRouting</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -11,7 +11,7 @@
 			<arguments>
 				<dictionary>
 					<key>LaunchConfigHandle</key>
-					<value>&lt;project&gt;/.externalToolBuilders/openrest-test-ant.launch</value>
+					<value>&lt;project&gt;/.externalToolBuilders/DynamicRouting-ant.launch</value>
 				</dictionary>
 			</arguments>
 		</buildCommand>
